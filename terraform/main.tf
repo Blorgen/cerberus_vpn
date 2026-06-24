@@ -95,3 +95,11 @@ resource "twc_ssh_key" "second-head-key" {
    body = file("~/.ssh/second-head.pub")
 }
 
+resource "local_file" "ansible_inventory" {
+  filename = "../ansible/hosts.ini"
+  content  = <<EOT
+[vpn_routers]
+router-europe-1 ansible_host=${twc_floating_ip.second-head-floating-ip.ip} ansible_user=root ansible_ssh_private_key_file=~/.ssh/second-head
+EOT
+}
+
